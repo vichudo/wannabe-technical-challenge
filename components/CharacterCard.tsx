@@ -1,6 +1,7 @@
 import { NextComponentType } from "next";
 import React, { FC } from "react";
 import type { Character } from "../types/character";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const example: Character = {
   name: "Obi-Wan Kenobi",
@@ -34,10 +35,29 @@ const example: Character = {
   url: "https://swapi.dev/api/people/10/",
 };
 
-const CharacterCard: FC<{ data: Character | null }> = () => {
+const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
   return (
-    <div className="w-72 h-fit my-4 bg-gray-800 rounded-md flex justify-center">
-      <div className="text-yellow-500 font-bold">{example.name}</div>
+    <div className="flex justify-between">
+      <div>
+        <div className="w-72 h-fit py-3 my-2 bg-gray-800 rounded-md flex pr-6  text-white">
+          <div className="w-72 h-fit bg-gray-800 rounded-md flex flex-col  text-white">
+            <h2 className="text-yellow-500 ml-3 font-bold">{data?.name}</h2>
+            <span className="ml-3 text-xs ">
+              <span className="font-bold">born:</span> {data?.birth_year}
+            </span>
+            <span className="ml-3 text-xs ">
+              <span className="font-bold">height:</span> {data?.height}
+            </span>
+            <span className="ml-3 text-xs ">
+              <span className="font-bold">mass:</span> {data?.mass}
+            </span>
+          </div>
+          <button className="text-sm ">
+            Explore
+            <OpenInNewIcon />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import type { GetStaticProps, NextPage } from "next";
-import CharacterCard from "../components/CharacterCard";
 import DisplayCards from "../components/DisplayCards";
 import { Character } from "../types/character";
 

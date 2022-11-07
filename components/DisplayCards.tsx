@@ -7,7 +7,7 @@ const DisplayCards: NextPage<{ data: Character[] }> = ({ data }) => {
   return (
     <div>
       {data.map((i, index) => (
-        <div key={index}>{i.name}</div>
+        <CharacterCard key={index} data={i} />
       ))}
     </div>
   );
