@@ -32,7 +32,7 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
           </Link>
         )}
         <span>current page {router.query.page ? router.query.page : 1} </span>
-        {parseInt(router.query.page as string) < 9 && (
+        {(parseInt(router.query.page as string) < 9 || !router.query.page) && (
           <Link
             href={`/?page=${
               router.query.page ? parseInt(router.query.page[0]) + 1 : 2
