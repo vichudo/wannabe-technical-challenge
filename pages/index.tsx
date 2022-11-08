@@ -32,13 +32,18 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
       </p>
 
       {/* Search Input */}
-      <form onSubmit={handleSearch} method="POST">
+      <form
+        className="flex flex-col items-center mb-2"
+        onSubmit={handleSearch}
+        method="POST"
+      >
         <input
           onChange={handleInputChange}
-          className="bg-gray-300 my-3 rounded-md text-center placeholder-gray-700"
+          className="bg-gray-300 mt-3 rounded-md text-center placeholder-gray-700"
           placeholder="Search Here"
           type="text"
         />
+        <p className="text-[0.6rem] pt-1">(press Enter to search)</p>
       </form>
 
       {/* Card Displaying */}

@@ -35,6 +35,11 @@ const example: Character = {
   url: "https://swapi.dev/api/people/10/",
 };
 
+/**
+ * Small Card Component.
+ * @param data - Object with all the character data.
+ * @returns Functional Component with partial character info.
+ */
 const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
   return (
     <div className="flex justify-between">

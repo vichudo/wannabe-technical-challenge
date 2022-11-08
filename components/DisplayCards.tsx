@@ -5,8 +5,8 @@ import { Character } from "../types/character";
 
 /**
  * Iterates all characters to display their Cards
- * @param  {Character[]} Character array of all the iterable info.
- * @return {NextPage}
+ * @param data - Character array of all the iterable info.
+ * @returns div component with all character card component.
  */
 
 const DisplayCards: NextPage<{ data: Character[] }> = ({ data }) => {
