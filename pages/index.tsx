@@ -90,9 +90,17 @@ Fetching information with server side rendering. This approach is used mainly be
 We can also search characters and render via server with this approach (getServerSideProps), and overall this is a convinient way for the case and API design.
 */
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  res,
+}) => {
   const { search } = query;
   const { page } = query;
+
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
 
   if (search) {
     const data = await fetch(
