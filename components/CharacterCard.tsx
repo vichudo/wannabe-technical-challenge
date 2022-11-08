@@ -1,7 +1,7 @@
-import { NextComponentType } from "next";
 import React, { FC } from "react";
 import type { Character } from "../types/character";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Link from "next/link";
 
 const example: Character = {
   name: "Obi-Wan Kenobi",
@@ -52,10 +52,12 @@ const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
               <span className="font-bold">mass:</span> {data?.mass}
             </span>
           </div>
-          <button className="text-sm ">
-            Explore
-            <OpenInNewIcon />
-          </button>
+          <Link href={`/${encodeURI(data?.name as string)}`}>
+            <button className="text-sm ">
+              Explore
+              <OpenInNewIcon />
+            </button>
+          </Link>
         </div>
       </div>
     </div>

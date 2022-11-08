@@ -5,8 +5,8 @@ import { Character } from "../types/character";
 
 const DisplayCards: NextPage<{ data: Character[] }> = ({ data }) => {
   return (
-    <div>
-      {data.map((i, index) => (
+    <div className="flex flex-wrap  justify-center gap-4 mx-32">
+      {data?.map((i, index) => (
         <CharacterCard key={index} data={i} />
       ))}
     </div>
