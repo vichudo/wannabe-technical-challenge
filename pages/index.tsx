@@ -25,10 +25,13 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
       <h1 className="mt-12 text-xl shadow-xl font-bold bg-gray-800 text-yellow-500 px-3 py-3 rounded-md">
         Star Wars Character Directory 😎
       </h1>
+
       <p className="w-80 text-sm mt-2 text-center">
         In this place you can look for all the characters of the masterpiece
         saga of StarWars
       </p>
+
+      {/* Search Input */}
       <form onSubmit={handleSearch} method="POST">
         <input
           onChange={handleInputChange}
@@ -37,7 +40,11 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
           type="text"
         />
       </form>
+
+      {/* Card Displaying */}
       <DisplayCards data={data} />
+
+      {/* Page and search conditions Handling */}
       {!router.query.search ? (
         <div className="mb-4">
           {parseInt(router.query.page as string) > 1 && (
@@ -71,6 +78,12 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
     </div>
   );
 };
+
+/*
+Fetching information with server side rendering. This approach is used mainly because of the API design (page limited data - 10 items/page), StaticProps could be also used by fetching all the pages at once and it would be faster in navigation but would require other search solution. 
+
+We can also search characters and render via server with this approach (getServerSideProps), and overall this is a convinient way for the case and API design.
+*/
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { search } = query;

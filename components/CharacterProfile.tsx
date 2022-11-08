@@ -1,6 +1,17 @@
 import React, { FC } from "react";
 import { CharacterProfileType } from "../types/character";
 
+/**
+ * Dynamic Route Character Profile
+ * @param data - Character data object
+ * @param homeworld - string with the homeworld name of the character
+ * @param films - array with the films where the character appears
+ * @param species - array with species type of the character
+ * @param vehicles - array with the vehicles relative to character
+ * @param starships - array with starships relative to the character
+ * @returns Functional Component with all character info.
+ */
+
 const CharacterProfile: FC<CharacterProfileType> = ({
   data,
   homeworld,
