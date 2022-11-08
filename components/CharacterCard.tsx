@@ -36,6 +36,7 @@ const example: Character = {
 };
 
 const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
+  console.log(data?.url);
   return (
     <div className="flex justify-between">
       <div>
@@ -52,7 +53,7 @@ const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
               <span className="font-bold">mass:</span> {data?.mass}
             </span>
           </div>
-          <Link href={`/${encodeURI(data?.name as string)}`}>
+          <Link href={`/${data?.url.replace(/\D/g, "")}`}>
             <button className="text-sm ">
               Explore
               <OpenInNewIcon />

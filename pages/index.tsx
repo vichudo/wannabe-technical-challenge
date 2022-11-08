@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import DisplayCards from "../components/DisplayCards";
 import { Character } from "../types/character";
 import { useRouter } from "next/router";
@@ -21,7 +21,7 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
         saga of StarWars
       </p>
       <DisplayCards data={data} />
-      <div>
+      <div className="mb-4">
         {parseInt(router.query.page as string) > 1 && (
           <Link
             href={`/?page=${
@@ -55,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         res.json()
       );
 
-  console.log(data);
+  // console.log(data);
 
   return {
     props: { data: data.results },
