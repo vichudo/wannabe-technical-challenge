@@ -36,7 +36,6 @@ const example: Character = {
 };
 
 const CharacterCard: FC<{ data: Character | null }> = ({ data }) => {
-  console.log(data?.url);
   return (
     <div className="flex justify-between">
       <div>

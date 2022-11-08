@@ -16,3 +16,12 @@ export type Character = {
   edited: Date | string;
   url: string;
 };
+
+export type CharacterProfileType = {
+  data: Character;
+  homeworld?: string;
+  films?: string[];
+  species?: string[];
+  vehicles?: string[];
+  starships?: string[];
+};
