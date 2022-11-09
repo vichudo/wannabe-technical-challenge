@@ -1,24 +1,37 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import DisplayCards from "../components/DisplayCards";
-import { Character } from "../types/character";
+
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "@mui/icons-material";
 import { ChangeEvent } from "react";
 
-const Home: NextPage<{ data: Character[] }> = ({ data }) => {
+const Home: NextPage<{ data: any }> = ({ data }) => {
   const router = useRouter();
-  const [search, setSearch] = useState<string>("");
+  const [search_, setSearch] = useState<string>("");
+  const [pageNumber, setPageNumber] = useState<any>();
+  const { page } = router.query;
+  // const { search } = router.query;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setSearch((prev) => e.target.value);
   };
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    router.push(`?search=${encodeURI(search)}`);
+    //In case of using serverSideProps, you can use
+    // router.push(`?search=${encodeURI(search_)}`)
+    //to query params via server
   };
+
+  useEffect(() => {
+    if (page) {
+      setPageNumber(page);
+    } else {
+      setPageNumber("1");
+    }
+  }, [router]);
 
   return (
     <div className="flex min-h-screen flex-col items-center py-2 bg-gray-200">
@@ -43,32 +56,33 @@ const Home: NextPage<{ data: Character[] }> = ({ data }) => {
           placeholder="Search Here"
           type="text"
         />
-        <p className="text-[0.6rem] pt-1">(press Enter to search)</p>
+        <p className="text-[0.6rem] pt-1">(Dynamic Search)</p>
       </form>
 
       {/* Card Displaying */}
-      <DisplayCards data={data} />
+      <DisplayCards
+        data={
+          search_
+            ? Object.values(data)
+                .flat(Infinity)
+                .filter(({ name }: any) =>
+                  name.toLowerCase().match(search_.toLowerCase())
+                )
+            : data[parseInt(pageNumber) - 1]
+        }
+      />
 
       {/* Page and search conditions Handling */}
       {!router.query.search ? (
         <div className="mb-4">
-          {parseInt(router.query.page as string) > 1 && (
-            <Link
-              href={`/?page=${
-                router.query.page ? parseInt(router.query.page[0]) - 1 : 1
-              }`}
-            >
+          {parseInt(pageNumber) > 1 && (
+            <Link href={`/?page=${page ? parseInt(pageNumber) - 1 : 1}`}>
               <ArrowLeft />
             </Link>
           )}
-          <span>current page {router.query.page ? router.query.page : 1} </span>
-          {(parseInt(router.query.page as string) < 9 ||
-            !router.query.page) && (
-            <Link
-              href={`/?page=${
-                router.query.page ? parseInt(router.query.page[0]) + 1 : 2
-              }`}
-            >
+          <span>current page {page ? page : 1} </span>
+          {(parseInt(pageNumber) < 9 || !page) && (
+            <Link href={`/?page=${page ? parseInt(pageNumber) + 1 : 2}`}>
               <ArrowRight />
             </Link>
           )}
@@ -90,37 +104,22 @@ Fetching information with server side rendering. This approach is used mainly be
 We can also search characters and render via server with this approach (getServerSideProps), and overall this is a convinient way for the case and API design.
 */
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  res,
-}) => {
-  const { search } = query;
-  const { page } = query;
+export const getStaticProps: GetStaticProps = async () => {
+  const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
-  if (search) {
-    const data = await fetch(
-      `https://swapi.dev/api/people/?search=${search}`
-    ).then((res) => res.json());
-    return {
-      props: { data: data.results },
-    };
-  } else {
-    const data = page
-      ? await fetch(`https://swapi.dev/api/people/?page=${page}`).then((res) =>
+  const data = await Promise.all(
+    pages.map(
+      async (i) =>
+        await fetch(`https://swapi.dev/api/people/?page=${i}`).then((res) =>
           res.json()
         )
-      : await fetch(`https://swapi.dev/api/people/?page=1`).then((res) =>
-          res.json()
-        );
+    )
+  );
 
-    return {
-      props: { data: data.results },
-    };
-  }
+  const final_data = { ...data.map(({ results }) => [...results]) };
+
+  return {
+    props: { data: final_data },
+  };
 };
 export default Home;
